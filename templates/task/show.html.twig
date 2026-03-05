@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Détails de la tâche</h2>
+    <table class="table table-bordered">
+        <tr><th>Titre</th><td>{{ task.title }}</td></tr>
+        <tr><th>Description</th><td>{{ task.description }}</td></tr>
+        <tr><th>Statut</th><td>{{ task.status.value }}</td></tr>
+    </table>
+    <a href="{{ path('task_edit', {id: task.id}) }}" class="btn btn-primary">Modifier</a>
+    <a href="{{ path('task_index') }}" class="btn btn-secondary">Retour</a>
+</div>
+{% endblock %}

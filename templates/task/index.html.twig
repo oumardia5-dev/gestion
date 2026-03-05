@@ -2,41 +2,69 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h2>Gestion des tâches</h2>
+    <h2 class="mb-4">Gestion des tâches</h2>
 
-    <a href="{{ path('task_new') }}" class="btn btn-primary mb-3">Ajouter une tâche</a>
+    <a href="{{ path('task_new') }}" class="btn btn-primary mb-3">
+        Ajouter une tâche
+    </a>
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
-                 <th>Id</th>
+             <th>Id</th>
                 <th>Titre</th>
                 <th>Description</th>
                 <th>Statut</th>
-                <th>Actions</th>
+                <th width="300">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for task in tasks %}
             <tr>
-                 <td>{{ task.id }}</td>
+                <td>{{ task.id }}</td>
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.status.value }}</td>
                 <td>
+                    {% if task.status.value == 'Terminé' %}
+                        <span class="badge bg-success">
+                            {{ task.status.value }}
+                        </span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">
+                            {{ task.status.value }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- 🔹 Bouton Voir (AJOUTÉ) -->
+                    <a href="{{ path('task_show', {id: task.id}) }}"
+                       class="btn btn-info btn-sm">
+                        Voir
+                    </a>
+
+                    <!-- 🔹 Bouton Modifier (AJOUTÉ) -->
+                    <a href="{{ path('task_edit', {id: task.id}) }}"
+                       class="btn btn-warning btn-sm">
+                        Modifier
+                    </a>
+
+                    <!-- 🔹 Bouton Terminer (déjà existant mais gardé) -->
                     {% if task.status.value != 'Terminé' %}
-                        <a href="{{ path('task_done', {id: task.id}) }}" class="btn btn-success btn-sm">
+                        <a href="{{ path('task_done', {id: task.id}) }}"
+                           class="btn btn-success btn-sm">
                             Terminer
                         </a>
                     {% endif %}
 
+                    <!-- 🔹 Bouton Supprimer -->
                     <form method="post"
                           action="{{ path('task_delete', {id: task.id}) }}"
                           style="display:inline;">
                         <input type="hidden"
                                name="_token"
                                value="{{ csrf_token('delete' ~ task.id) }}">
-                        <button class="btn btn-danger btn-sm">
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Voulez-vous vraiment supprimer cette tâche ?');">
                             Supprimer
                         </button>
                     </form>
@@ -44,7 +72,9 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">Aucune tâche trouvée</td>
+                <td colspan="4" class="text-center">
+                    Aucune tâche trouvée.
+                </td>
             </tr>
         {% endfor %}
         </tbody>

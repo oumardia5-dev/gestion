@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Task;
@@ -40,6 +39,31 @@ class TaskController extends AbstractController
         ]);
     }
 
+    // --------------- NOUVEAUX AJOUTS ----------------
+    #[Route('/{id}', name: 'task_show', methods: ['GET'])]
+    public function show(Task $task): Response
+    {
+        return $this->render('task/show.html.twig', ['task' => $task]);
+    }
+
+    #[Route('/{id}/edit', name: 'task_edit', methods: ['GET','POST'])]
+    public function edit(Request $request, Task $task): Response
+    {
+        $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->taskService->update();
+            return $this->redirectToRoute('task_index');
+        }
+
+        return $this->render('task/form.html.twig', [
+            'form' => $form->createView(),
+            'edit' => true
+        ]);
+    }
+    // ------------------------------------------------
+
     #[Route('/{id}/done', name: 'task_done')]
     public function done(Task $task): Response
     {
@@ -53,7 +77,6 @@ class TaskController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
             $this->taskService->delete($task);
         }
-
         return $this->redirectToRoute('task_index');
     }
 }

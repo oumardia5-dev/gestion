@@ -2,16 +2,18 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h2>Nouvelle tâche</h2>
+    {% if edit is defined and edit %}
+        <h2>Modifier la tâche</h2>
+    {% else %}
+        <h2>Nouvelle tâche</h2>
+    {% endif %}
 
     {{ form_start(form) }}
         {{ form_row(form.title) }}
         {{ form_row(form.description) }}
-        <button class="btn btn-success">Enregistrer</button>
+        <button class="btn btn-success">{% if edit is defined and edit %}Modifier{% else %}Enregistrer{% endif %}</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('task_index') }}" class="btn btn-secondary mt-3">
-        Retour
-    </a>
+    <a href="{{ path('task_index') }}" class="btn btn-secondary mt-3">Retour</a>
 </div>
 {% endblock %}
