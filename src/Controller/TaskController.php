@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/tasks')]
+#[Route('/')]
 class TaskController extends AbstractController
 {
     public function __construct(private TaskServiceInterface $taskService) {}
@@ -39,7 +39,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    // --------------- NOUVEAUX AJOUTS ----------------
+    // ---------------  ----------------
     #[Route('/{id}', name: 'task_show', methods: ['GET'])]
     public function show(Task $task): Response
     {
