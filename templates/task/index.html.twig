@@ -23,7 +23,7 @@
             <tr>
                 <td>{{ task.id }}</td>
                 <td>{{ task.title }}</td>
-                <td>{{ task.description|slice(0, 50) ~ '.....' }}</td>
+                <td>{{ task.description|slice(0, 65) ~ '.....' }}</td>
                 <td>
                     {% if task.status.value == 'Terminé' %}
                         <span class="badge bg-success">
